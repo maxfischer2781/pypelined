@@ -45,10 +45,8 @@ class UDPSocket(BaseSocket):
     def chainlet_send(self, value=None):
         """Send pipeline value to ``host:port`` without consuming it"""
         message = self._encode(value)
-        print('socket', message)
         while message:
             message = message[self._socket.sendto(message, self._address):]
-        print('socket', message)
         return value
 
 

@@ -60,5 +60,4 @@ def telegraf_message(name, static_tags=None, dynamic_tags=(), fields=None, time_
                 fields=message_fields,
                 timestamp=(time.time() // time_resolution)*time_resolution
             )
-        print('telegraf', message)
         report = yield message
