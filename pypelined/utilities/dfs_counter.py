@@ -1,5 +1,6 @@
 import socket
 import os
+import sys
 import hashlib
 import filelock
 import glob
@@ -14,6 +15,10 @@ import errno
 from .singleton import Singleton
 
 
+#: Identifier for the process owning a counter
+OWNER_IDENTIFIER = '%s\t%s\t%s' % (socket.getfqdn(), os.getpid(), sys.executable)
+
+
 # actually a method of DFSCounter
 # must be separate to allow garbage collection of self
 def _count_updater(self):
@@ -24,23 +29,22 @@ def _count_updater(self):
     marker_path = self._marker_path
     thread_shutdown = self._thread_shutdown
     host_lock = self._host_lock
-    host_identifier = self._host_identifier
     logger = self._logger
     self._logger.info('acquiring %r @ %r', self_repr, marker_path)
     with host_lock:
         while not thread_shutdown.is_set():
             try:
                 with open(marker_path, 'w') as marker:
-                    marker.write('%s %s' % (host_identifier, os.getpid()))
+                    marker.write(OWNER_IDENTIFIER)
                     logger.debug('marking %r @ %r', self_repr, marker_path)
                 self._count_value = self._get_count()
-                # wait for a fraction of timeout to allow write failures
-                # jitter wait to smooth out path access
-                thread_shutdown.wait(self.timeout / (3 + random.random()))
             except ReferenceError:
                 pass
             except Exception as err:
                 logger.warning('failed updating %r: %s', self_repr, err)
+            # wait for a fraction of timeout to allow write failures
+            # jitter wait to smooth out path access
+            thread_shutdown.wait(self.timeout / (3 + random.random()))
         logger.info('releasing %r @ %r', self_repr, marker_path)
         if os.path.exists(marker_path) and os.path.isfile(marker_path):
             os.unlink(marker_path)
