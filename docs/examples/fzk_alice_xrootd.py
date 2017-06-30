@@ -17,7 +17,7 @@ alice_backend = alice_xrootd('localhost:8560')
 # translate report keys to more descriptive names
 telegraf_remap = remap({
     'pgm': 'daemon', 'info.host': 'hostname', 'ins': 'instance', 'ver': 'version', 'ofs.role': 'role',
-    'site': 'se_name', 'oss.space.0.tot': 'space_total', 'oss.space.0.free': 'space_free',
+    'site': 'se_name', 'oss.paths.0.tot': 'space_total', 'oss.paths.0.free': 'space_free',
     'link.num': 'connections', 'ofs.han': 'filehandles', 'sched.threads': 'threads',
     'link.in': 'bytes_recv', 'link.out': 'bytes_sent'
 })
