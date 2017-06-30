@@ -2,6 +2,14 @@
 pypelined - stream and pipeline processing service
 ++++++++++++++++++++++++++++++++++++++++++++++++++
 
+.. image:: https://readthedocs.org/projects/pypelined/badge/?version=latest
+    :target: http://pypelined.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
+.. image:: https://img.shields.io/github/issues-raw/maxfischer2781/pypelined.svg
+   :target: https://github.com/maxfischer2781/pypelined/issues
+   :alt: Open Issues
+
 Service and framework for creating and running processing pipelines for data streams, events and chunks.
 Pipelines of ``pypelined`` are composed from individual elements using the chainlet_ library.
 They are built in Python configuration files, from custom objects or pre-defined plugins.
