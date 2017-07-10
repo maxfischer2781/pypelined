@@ -261,8 +261,8 @@ def alice_xrootd(*destinations):
     """
     Factory for ALICE XRootD ApMon/MonALISA Backend
 
-    :param destination: where to send data to, as `"hostname:port"`
-    :type destination: str
+    :param destinations: where to send data to, as `"hostname:port"`
+    :type destinations: str
     """
     backend = AliceApMonBackend(*destinations)
     return (XrootdSpaceReporter(), chainlet.NoOp()) >> backend
