@@ -5,6 +5,13 @@ pypelined Changelog
 Beta Releases
 -------------
 
+v0.1.2 2017-06-30
+-----------------
+
+    **Bugfixes**
+
+        AliceApMonBackend: added guard against invalid ApMon INSTANCE_ID
+
 v0.1.1 2017-06-30
 -----------------
 

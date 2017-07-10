@@ -171,6 +171,9 @@ class AliceApMonBackend(Reporter):
         apmon_logger, apmon.Logger = apmon.Logger, ApMonLogger
         self._apmon = apmon.ApMon(destination)
         apmon.Logger = apmon_logger
+        # BUGFIX: apmon can create an invalid identifier on systems with pids > 32767
+        if any(senderRef['INSTANCE_ID'] > 2147483647 for senderRef in self._apmon.senderRef.values()):
+            raise RuntimeError('invalid ApMon INSTANCE_ID')  # https://github.com/MonALISA-CIT/apmon_py/issues/4
         # background monitoring
         self._background_monitor_sitename = None
         self._service_job_monitor = set()
