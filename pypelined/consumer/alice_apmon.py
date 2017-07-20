@@ -184,6 +184,8 @@ class AliceApMonBackend(Reporter):
         if self._send_apmon_report(value):
             return value
         # regular xrootd report
+        self._send_raw_report(value)
+        # configure background monitoring of xrootd components from report
         self._monitor_host(value)
         self._monitor_service(value)
 
