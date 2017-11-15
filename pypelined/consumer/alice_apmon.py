@@ -9,6 +9,7 @@ import time
 
 import apmon
 import chainlet
+import chainlet.dataflow
 
 from ..utilities import proctools
 from ..utilities import dfs_counter
@@ -267,4 +268,4 @@ def alice_xrootd(*destinations):
     :type destinations: str
     """
     backend = AliceApMonBackend(*destinations)
-    return (XrootdSpaceReporter(), chainlet.NoOp()) >> backend
+    return (XrootdSpaceReporter(), chainlet.dataflow.NoOp()) >> backend
