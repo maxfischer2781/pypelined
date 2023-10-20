@@ -159,6 +159,8 @@ class XrootdSpaceReporter(Reporter):
             # get real path to volume to count how many reporters see it
             path_rp = report["oss.paths.%d.rp" % path_id]
             path_reporters = self._get_path_share(path_rp)
+            if path_reporters is None:
+                continue
             self._logger.debug(
                 "adding report (%d reporters) for path %r", path_reporters, path_rp
             )
@@ -180,7 +182,7 @@ class XrootdSpaceReporter(Reporter):
         if path not in self._space_counters:
             # ignore paths that are read-only, we cannot count nor claim them
             if os.statvfs(path).f_flag & os.ST_RDONLY:
-                self._space_counters[path] = 0
+                self._space_counters[path] = None
             else:
                 self._space_counters[path] = dfs_counter.DFSCounter(path)
         return self._space_counters[path]
