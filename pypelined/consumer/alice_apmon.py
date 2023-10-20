@@ -6,6 +6,7 @@ from __future__ import division, absolute_import
 import logging
 import socket
 import time
+import os
 
 import apmon
 import chainlet
@@ -177,7 +178,11 @@ class XrootdSpaceReporter(Reporter):
     def _get_path_share(self, path):
         """Get the number of hosts reporting the same space share"""
         if path not in self._space_counters:
-            self._space_counters[path] = dfs_counter.DFSCounter(path)
+            # ignore paths that are read-only, we cannot count nor claim them
+            if os.statvfs(path).f_flag & os.ST_RDONLY:
+                self._space_counters[path] = 0
+            else:
+                self._space_counters[path] = dfs_counter.DFSCounter(path)
         return self._space_counters[path]
 
 
